@@ -34,47 +34,26 @@ gew = {  #graph_unequal_weights
 
 
 from collections import defaultdict
-import heapq
+from heapq import *
 
-def dijkstra(graph, src, dest):
-    q = [(1, src, [src])]
-    seen = set()
-    seen.add(src)
-    minDist = {src: 0}
-    res = None
+def dijkstra(graph, f, t):
+
+    q, seen, mins = [(0,f)], set(), {f: 0}
     while q:
-        dist, node, path = heapq.heappop(q)
-        for nei in graph[node]:
-            # if nei[0] not in seen:
-            if nei[0] in seen: continue
-            if nei[0] not in seen:
-                seen.add(nei[0])
+        cost, node = heappop(q)
+        # cost, node = q.pop(0)
+        if node not in seen:
+            seen.add(node)
+            if node == t: return cost
 
-                if nei[0] == dest: return dist
-                prev = minDist.get(nei[0], None)
-                next = dist+nei[1]
-                if prev == None or next < prev:
-                    minDist[nei[0]] = next
-                    heapq.heappush(q, (dist+nei[1], nei[0], path+[nei[0]]))
-    return res
-
-
-#     q, seen, mins = [(0,f)], set(), {f: 0}
-#     while q:
-#         cost, node = heappop(q)
-#         if node not in seen:
-#             seen.add(node)
-#             if node == t: return cost
-#
-#             for nei in graph[node]:
-#                 if nei[0] in seen: continue
-#                 prev = mins.get(nei[0], None)
-#                 next = cost + nei[1]
-#                 if prev is None or next < prev:
-#                     mins[nei[0]] = next
-#                     heappush(q, (next, nei[0]))
-#     return float("inf")
-
+            for nei in graph[node]:
+                if nei[0] in seen: continue
+                prev = mins.get(nei[0], None)
+                next = cost + nei[1]
+                if prev is None or next < prev:
+                    mins[nei[0]] = next
+                    heappush(q, (next, nei[0]))
+    return float("inf")
 
 def bfs(graph, src, dest):
     q = [(1, src, [src])]
@@ -99,4 +78,4 @@ def bfs(graph, src, dest):
 print("Dijktras on unequal", dijkstra(guw, 'A', 'D'))
 print("Dijktras on equal", dijkstra(gew, 'A', 'D' ))
 print("bfs unequal weights", bfs(guw, 'A', 'D'))
-print("bfs equal weights", bfs(gew, 'A', 'D'))
+print("bfs equal weights", bfs(gew, 'A', 'C'))
