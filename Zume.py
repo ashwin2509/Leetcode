@@ -51,15 +51,6 @@ hasCommonAncestor(parentChildPairs2, 1, 6) => false
 hasCommonAncestor(parentChildPairs2, 1, 12) => false
 '''
 
-# parent_child_pairs_1 = [
-#     (1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5),
-#     (4, 8), (4, 9), (9, 11), (14, 4), (13, 12), (12, 9)
-# ]
-
-# parent_child_pairs_2 = [
-#     (11, 10), (11, 12), (10, 2), (10, 5), (1, 3),
-#     (2, 3), (3, 4), (5, 6), (5, 7), (7, 8)
-# ]
 
 
 '''
@@ -133,6 +124,33 @@ def check(parent, node, parents, dic):
             child = parent
             parent = ele
             check(parent, child, parents, dic)
+
+
+
+def check(parent, child, parents, dic):
+    if parent not in dic:
+        parents.add(parent)
+        return
+    while parent in dic:
+        for ele in dic[parent]:
+            child = parent
+            parent = ele
+            check(parent, child, parents, dic)
+
+
+
+def check2(parent, child, parents, dic):
+    if parent in parents:
+        return True
+    while parent in dic:
+        for ele in dic[parent]:
+            child = parent
+            parent = ele
+            if check2(parent, child, parents, dic):
+                return True
+    return False
+
+
 
 parentChildPairs1 = [
     (1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5),

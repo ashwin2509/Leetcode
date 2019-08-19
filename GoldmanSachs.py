@@ -32,5 +32,4 @@ def shortestPath(graph, src, dest):
                     q.append((nei, dist+1, path+[nei]))
     return "->".join(res[2])
 
-
 print(shortestPath(graph, 'A', 'H'))
